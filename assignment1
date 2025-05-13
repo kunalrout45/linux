@@ -3,3 +3,145 @@ Q1)What is Linux?
 Ans)Linux is an OS , to be more precise linux is a kernel , since kernel is the core component which drives the OS so Linux is ofter interchangably reffered to as an OS or a kernel. 
 
 Q2)What is the difference between Hard Link & Soft Link?
+
+Ans)HARD LINK: it is just another name of same original file but treated as a replica having the same inode , size and time stamp .
+command to create a hardlink : ln <original_file_name> <hard_link_name>
+If in case we delete the original the har link will still be accessible 
+
+SOFT LINK: its just like a window shortcut , a point to another file known as symbiolic link .
+command : ln -s  <original_file_name> <soft_link_name>
+It will have different inode number , size , and timestamp as of original .
+
+Q3)What is a Kernel in Linux?
+Ans)Kernel is the middleman between shell and OS , it executes the commands withe the help of hardware components , responsibble for memory allocation and process allocation
+
+Q4)How do you create a user account?
+Ans)sudo useradd username
+
+
+Q5)What is the ‘grep’ command used for in Linux?
+Ans)The grep command in Linux is used to search for patterns (text/strings) within files or output.
+
+Q6)Step1: Create user p1
+
+ Step2: He should be part of 3 groups g1,g2,g3.
+
+ Step3: whenever he creates a file automatically in the group section of file grp g1 should come.
+
+Ans)
+kunal@kunal:~/Desktop/qsans$ sudo useradd -m -s /bin/bash p1
+[sudo] password for kunal:            
+kunal@kunal:~/Desktop/qsans$ ls /home
+kunal  p1
+kunal@kunal:~/Desktop/qsans$ sudo groupadd g1
+kunal@kunal:~/Desktop/qsans$ sudo groupadd g2
+kunal@kunal:~/Desktop/qsans$ sudo groupadd g3
+kunal@kunal:~/Desktop/qsans$ cat /etc/group |tail -3
+g1:x:1002:
+g2:x:1003:
+g3:x:1004:
+kunal@kunal:~/Desktop/qsans$ sudo usermod -aG g1,g2,g3 p1
+kunal@kunal:~/Desktop/qsans$ group p1
+Command 'group' not found, did you mean:
+  command 'grop' from deb grop (2:0.10-1.2)
+  command 'groups' from deb coreutils (9.4-2ubuntu2)
+Try: sudo apt install <deb name>
+kunal@kunal:~/Desktop/qsans$ groups p1
+p1 : p1 g1 g2 g3
+kunal@kunal:~/Desktop/qsans$ id p1
+uid=1001(p1) gid=1001(p1) groups=1001(p1),1002(g1),1003(g2),1004(g3)
+kunal@kunal:~/Desktop/qsans$ sudo usermod -g g1 p1
+kunal@kunal:~/Desktop/qsans$ id p1
+uid=1001(p1) gid=1002(g1) groups=1002(g1),1003(g2),1004(g3)
+kunal@kunal:~/Desktop/qsans$ sudo passwd p1
+New password: 
+Retype new password: 
+passwd: password updated successfully
+kunal@kunal:~/Desktop/qsans$ su - p1
+Password: 
+p1@kunal:~$ touch testfile
+p1@kunal:~$ ls -l testfile
+-rw-r--r-- 1 p1 g1 0 May 13 10:56 testfile
+
+Q7)
+Step1: Create directory /tmp/bg as root user and create files inside it.
+
+Step2: “abhi” should be the owner of the directory. He should be able to create files and delete files inside 
+
+        the directory and also he should be able to add content to all files inside the directory
+
+Ans)
+kunal@kunal:~$ sudo -i
+[sudo] password for kunal:            
+root@kunal:~# ls /tmp
+config-err-HX76to                                                             systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-polkit.service-wVWQDZ
+mintUpdate                                                                    systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-switcheroo-control.service-473sck
+systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-bluetooth.service-lSEu0k     systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-systemd-logind.service-uZXMgz
+systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-colord.service-sBiu65        systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-systemd-resolved.service-ED00nn
+systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-fwupd.service-1nCQ1l         systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-systemd-timesyncd.service-kd41E6
+systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-ModemManager.service-W5Bc0W  systemd-private-2aa7a303e96741dbaa6b15ce9810c53f-upower.service-MedBdk
+root@kunal:~# ls
+root@kunal:~# ls /
+bin                boot   dev  home  lib64              lost+found  mnt  proc  run   sbin.usr-is-merged  swapfile  tmp  var
+bin.usr-is-merged  cdrom  etc  lib   lib.usr-is-merged  media       opt  root  sbin  srv                 sys       usr
+root@kunal:~# mkdir /tmp/bg
+root@kunal:~# touch /tmp/bg/file{1..5}.txt
+root@kunal:~# tree /tmp/bg
+/tmp/bg
+├── file1.txt
+├── file2.txt
+├── file3.txt
+├── file4.txt
+└── file5.txt
+
+1 directory, 5 files
+root@kunal:~# exit
+logout
+kunal@kunal:~$ sudo useradd -m -s /bin/bash abhi
+kunal@kunal:~$ sudo passwd abhi
+New password: 
+Retype new password: 
+passwd: password updated successfully
+kunal@kunal:~$ sudo chown -R abhi /tmp/bg
+kunal@kunal:~$ ls /tmp/bg/
+file1.txt  file2.txt  file3.txt  file4.txt  file5.txt
+kunal@kunal:~$ ls -l  /tmp/bg/
+total 0
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file1.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file2.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file3.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file4.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file5.txt
+kunal@kunal:~$ sudo chmod -R u+rwX /tmp/bg
+kunal@kunal:~$ sudo - abhi
+sudo: -: command not found
+kunal@kunal:~$ su - abhi
+Password: 
+abhi@kunal:~$ cd /tmp/bg
+abhi@kunal:/tmp/bg$ touch file6.txt
+abhi@kunal:/tmp/bg$ ls -l
+total 0
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file1.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file2.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file3.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file4.txt
+-rw-r--r-- 1 abhi root 0 May 13 11:22 file5.txt
+-rw-rw-r-- 1 abhi abhi 0 May 13 11:39 file6.txt
+abhi@kunal:/tmp/bg$ this is a new line >> file1.txt
+Command 'this' not found, did you mean:
+  command 'thin' from deb thin (1.8.1-2ubuntu1)
+Try: apt install <deb name>
+abhi@kunal:/tmp/bg$ echo 'this is a new line' >> file1.txt
+abhi@kunal:/tmp/bg$ cat file1.ttx
+cat: file1.ttx: No such file or directory
+abhi@kunal:/tmp/bg$ cat file1.txt
+this is a new line
+
+Q8)You suspect that a particular process is consuming excessive CPU resources on your Linux server. How
+would you identify and terminate this process?
+
+Ans)We can use top or htop command and sort it by CPU usage using Shift+P key 
+Then kill the desired process using commands :
+sudo kill <PID>     #to kill gracefully
+sudo kill -9 <PID>  #to kill forcefully 
+
