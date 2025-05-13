@@ -6,7 +6,7 @@ Q2)What is the difference between Hard Link & Soft Link?
 
 Ans)HARD LINK: it is just another name of same original file but treated as a replica having the same inode , size and time stamp .
 command to create a hardlink : ln <original_file_name> <hard_link_name>
-If in case we delete the original the har link will still be accessible 
+If in case we delete the original the hard link will still be accessible 
 
 SOFT LINK: its just like a window shortcut , a point to another file known as symbiolic link .
 command : ln -s  <original_file_name> <soft_link_name>
