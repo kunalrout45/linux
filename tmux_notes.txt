@@ -1,0 +1,37 @@
+Tmux stands for terminal multiplexer                                                                                                                                                     [0/0]
+Intresting fact about Tmux is it keeps your session persistent , so if your ssh connection drops your session is still running in the background
+
+#How to ckeck if tmux is already present :
+command -v tmux  #it should give you an output else install using your package manager, example : apt install tmux
+
+Keys & commands
+------------------------------
+-------------------------------
+Ctrl + B      #Prefix key (will be denoting it as PK)
+PK , d  #detached mode
+tmux          # new tmux session
+tmux list-sessions  #list sessions
+tmux ls             # alternatrive for list sessions
+tmux attach   #Reattach the detatched session
+tmux a        #alternative for tmux attach
+PK , '%'      #vertical split
+PK , "        #vertical split
+PK , arrows   #navitage to each plane
+exit          # to close each plane (close session as well)
+PK , x        # tmux way to kill a plane
+
+#inside a tmux window run: tmux new-window (observe the footer), alternatively we can use :
+PK , c    #create a new window
+PK , n    #for next window
+PK , p    #for previous window (asterik represents the current window)
+PK , ','  #to remane a window
+tmux rename-window new-name #alternative way to rename a window
+
+#when multiple tmux sessions(windows) are open , if you proceed with tmux attach you will be attached to the latest session
+#MITIGATION
+tmux attach -t [session 0,1,2....]
+tmux a -t [session 0,1,2....]
+tmux rename-session new-name  #rename a session (originally represented by 0 ,1 ,2 ...)
+PK , $    #alternative way to rename session
+PK , s    #switch session without exiting tmux
+PK , :    #command mode , for example you do not wish to have a specific mode let us say the mouse mode to be on , you can just turn it off
